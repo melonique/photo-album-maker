@@ -20,6 +20,20 @@ const AlbumPage = () => {
   return (
     <Container fluid>
       <h1>{album.title}</h1>
+
+      <pre>
+        Piton RECORD on / off > record audio
+        save the file
+        call api for STT
+        take text, call openAI for JSON
+        fill the form
+        on save:
+          upload picture +
+          upload audio +
+          save form + path to files
+      </pre>
+
+
       <AddPhoto albumId={album.id} />
       <hr />
     <Row>

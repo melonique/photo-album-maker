@@ -1,7 +1,7 @@
 import OpenAI from "openai";
 
 const openai = new OpenAI({
-  apiKey: "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", // This is the default and can be omitted
+  apiKey: process.env.OPENAI_API_KEY,
 });
 
 async function chat() {

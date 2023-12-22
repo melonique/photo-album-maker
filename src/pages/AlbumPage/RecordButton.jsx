@@ -31,6 +31,10 @@ const RecordButton = () => {
   const handleDataAvailable = (event) => {
     if (event.data.size > 0) {
       setAudioURL(URL.createObjectURL(event.data));
+
+
+      // make a speech to text request
+
     }
   };
 
