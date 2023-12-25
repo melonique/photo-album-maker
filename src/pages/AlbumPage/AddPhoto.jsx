@@ -2,8 +2,9 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { addPhotoToAlbum } from '../../store/albumSlice';
-import { Form, Button } from 'react-bootstrap';
+import { Form, Button, Row, Col } from 'react-bootstrap';
 import RecordButton from './RecordButton';
+import FileInputWithPreview from './FileInputWithPreview';
 
 const AddAlbumForm = ({ albumId }) => {
   const dispatch = useDispatch();
@@ -31,35 +32,61 @@ const AddAlbumForm = ({ albumId }) => {
   return (
    <>
       <h2>Add a Photo</h2>
-      <RecordButton />
       <Form onSubmit={handleSubmit}>
-        <Form.Group className="mb-3">
-          <Form.Label>Date</Form.Label>
-          <Form.Control type="date" name="date" />
-        </Form.Group>
-        <Form.Group className="mb-3">
-          <Form.Label>Description</Form.Label>
-          <Form.Control type="text" placeholder="Enter a description" name="description" />
-        </Form.Group>
-        <Form.Group className="mb-3">
-          <Form.Label>Summary</Form.Label>
-          <Form.Control type="text" placeholder="Enter a summary" name="summary" />
-        </Form.Group>
-        <Form.Group className="mb-3">
-          <Form.Label>Location</Form.Label>
-          <Form.Control type="text" placeholder="Enter a location" name="location" />
-        </Form.Group>
-        <Form.Group className="mb-3">
-          <Form.Label>People</Form.Label>
-          <Form.Control type="text" placeholder="Who's in the photo?" name="people" />
-        </Form.Group>
-        <Form.Group className="mb-3">
-          <Form.Label>Photo URL</Form.Label>
-          <Form.Control placeholder="http://example.com/photo.jpg" name="fileURL" />
-        </Form.Group>
-        <Button variant="primary" type="submit">
-          Add Photo
-        </Button>
+
+        <RecordButton />
+
+        <Row>
+          <Col md={6}>
+
+
+            <Form.Group className="mb-3">
+              <Form.Label>Description</Form.Label>
+              <Form.Control
+                as="textarea"
+                placeholder="Describe the audio"
+                name="description"
+                defaultValue="Oh, look at this! This was Christmas back in the '90s. There's your mother and father, both looking so young. Next to your father is me, your grandmother, and beside me is your grandfather. We were all smiling, happy to be together. Those two children are you and your sibling, both so small then! Over there are your great uncles and aunts. We gathered around the fireplace, the tree lights twinkling. It was a special time, full of laughter and joy, a lovely moment captured forever in this faded photo."
+                rows={7}
+              />
+            </Form.Group>
+
+            <FileInputWithPreview label="photo" onSelect={(a) => { console.log('log', a); }} />
+
+          </Col>
+          <Col>
+
+            <Form.Group className="mb-3">
+              <Form.Label>Date</Form.Label>
+              <Form.Control type="date" name="date" />
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>Description</Form.Label>
+              <Form.Control type="text" placeholder="Enter a description" name="description" />
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>Summary</Form.Label>
+              <Form.Control type="text" placeholder="Enter a summary" name="summary" />
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>Location</Form.Label>
+              <Form.Control type="text" placeholder="Enter a location" name="location" />
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>People</Form.Label>
+              <Form.Control type="text" placeholder="Who's in the photo?" name="people" />
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>Photo URL</Form.Label>
+              <Form.Control placeholder="http://example.com/photo.jpg" name="fileURL" />
+            </Form.Group>
+            <Button variant="primary" type="submit">
+              Add Photo
+            </Button>
+          </Col>
+        </Row>
+
+
       </Form>
    </>
   );
