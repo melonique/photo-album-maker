@@ -1,5 +1,6 @@
 // RecordButton.js
 import React, { useState, useRef } from 'react';
+const token = import.meta.env.VITE_OPENAI_API_KEY;
 
 const RecordButton = () => {
   const [recording, setRecording] = useState(false);
@@ -25,20 +26,42 @@ const RecordButton = () => {
     if (!recording) return; // Not currently recording
 
     mediaRecorder.current.stop(); // Stop the recording
+
     setRecording(false);
   };
 
   const handleDataAvailable = (event) => {
-    if (event.data.size > 0) {
-      setAudioURL(URL.createObjectURL(event.data));
+    const audioURL = URL.createObjectURL(event.data);
+    setAudioURL(audioURL);
 
+    const apiUrl = 'https://api.openai.com/v1/audio/transcriptions';
 
-      // make a speech to text request
+    const formData = new FormData();
+    const blob = new Blob([event.data], { type: "audio/ogg" });
 
+    if (isAudioTooLong(blob)) {
+      alert('Audio too long.  Consider a shorter description of the photo.');
+      return;
     }
-  };
 
+    formData.append('file', blob);
+    formData.append('model', 'whisper-1');
 
+    fetch(apiUrl, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+      body: formData,
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log('Success:', data);
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+  }
 
   return (
     <div>
@@ -53,3 +76,8 @@ const RecordButton = () => {
 };
 
 export default RecordButton;
+
+
+function isAudioTooLong (blob) {
+  return blob.size >= 25 * 1000000;
+}
