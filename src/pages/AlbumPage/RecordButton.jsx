@@ -2,7 +2,7 @@
 import React, { useState, useRef } from 'react';
 const token = import.meta.env.VITE_OPENAI_API_KEY;
 
-const RecordButton = () => {
+const RecordButton = ({ onTranscriptionsCompleted }) => {
   const [recording, setRecording] = useState(false);
   const [audioURL, setAudioURL] = useState('');
   const mediaRecorder = useRef(null);
@@ -56,7 +56,7 @@ const RecordButton = () => {
     })
     .then(response => response.json())
     .then(data => {
-      console.log('Success:', data);
+      onTranscriptionsCompleted(data.text);
     })
     .catch(error => {
       console.error('Error:', error);

@@ -8,6 +8,7 @@ import FileInputWithPreview from './FileInputWithPreview';
 
 const AddAlbumForm = ({ albumId }) => {
   const dispatch = useDispatch();
+  const [transcriptions, setTranscriptions] = useState("Oh, look at this! This was Christmas back in the '90s. There's your mother and father, both looking so young. Next to your father is me, your grandmother, and beside me is your grandfather. We were all smiling, happy to be together. Those two children are you and your sibling, both so small then! Over there are your great uncles and aunts. We gathered around the fireplace, the tree lights twinkling. It was a special time, full of laughter and joy, a lovely moment captured forever in this faded photo.");
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -34,7 +35,11 @@ const AddAlbumForm = ({ albumId }) => {
       <h2>Add a Photo</h2>
       <Form onSubmit={handleSubmit}>
 
-        <RecordButton />
+        <RecordButton
+          onTranscriptionsCompleted={(newTranscriptions) => {
+            setTranscriptions(newTranscriptions);
+          }}
+        />
 
         <Row>
           <Col md={6}>
@@ -46,7 +51,10 @@ const AddAlbumForm = ({ albumId }) => {
                 as="textarea"
                 placeholder="Describe the audio"
                 name="description"
-                defaultValue="Oh, look at this! This was Christmas back in the '90s. There's your mother and father, both looking so young. Next to your father is me, your grandmother, and beside me is your grandfather. We were all smiling, happy to be together. Those two children are you and your sibling, both so small then! Over there are your great uncles and aunts. We gathered around the fireplace, the tree lights twinkling. It was a special time, full of laughter and joy, a lovely moment captured forever in this faded photo."
+                value={transcriptions}
+                onChange={(value) => {
+                  setTranscriptions();
+                }}
                 rows={7}
               />
             </Form.Group>
