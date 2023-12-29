@@ -1,6 +1,6 @@
 // RecordButton.js
 import React, { useState, useRef } from 'react';
-const token = import.meta.env.VITE_OPENAI_API_KEY;
+import { speechToText, isAudioTooLong } from '../../services/speech'
 
 const RecordButton = ({ onTranscriptionsCompleted }) => {
   const [recording, setRecording] = useState(false);
@@ -30,13 +30,10 @@ const RecordButton = ({ onTranscriptionsCompleted }) => {
     setRecording(false);
   };
 
-  const handleDataAvailable = (event) => {
+  const handleDataAvailable = async (event) => {
     const audioURL = URL.createObjectURL(event.data);
     setAudioURL(audioURL);
 
-    const apiUrl = 'https://api.openai.com/v1/audio/transcriptions';
-
-    const formData = new FormData();
     const blob = new Blob([event.data], { type: "audio/ogg" });
 
     if (isAudioTooLong(blob)) {
@@ -44,23 +41,10 @@ const RecordButton = ({ onTranscriptionsCompleted }) => {
       return;
     }
 
-    formData.append('file', blob);
-    formData.append('model', 'whisper-1');
+    const text = await speechToText(event.data)
+    console.log(text)
+    onTranscriptionsCompleted(text)
 
-    fetch(apiUrl, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-      },
-      body: formData,
-    })
-    .then(response => response.json())
-    .then(data => {
-      onTranscriptionsCompleted(data.text);
-    })
-    .catch(error => {
-      console.error('Error:', error);
-    });
   }
 
   return (
@@ -77,7 +61,3 @@ const RecordButton = ({ onTranscriptionsCompleted }) => {
 
 export default RecordButton;
 
-
-function isAudioTooLong (blob) {
-  return blob.size >= 25 * 1000000;
-}

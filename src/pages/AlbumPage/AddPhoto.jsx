@@ -26,7 +26,6 @@ const AddAlbumForm = ({ albumId }) => {
 
     // Dispatch the action to add the photo to the album
     dispatch(addPhotoToAlbum({ albumId, photo: newPhoto }));
-    console.log("Photo added!", newPhoto);
     // Here you might want to reset the form or handle post-submit UI changes
   };
 
